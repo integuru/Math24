@@ -1,5 +1,6 @@
 from random import randint
 from os import remove, rename
+import re
 
 #operatorDict = {1:"+", 2:"-", 3:"*", 4:"/"}
 #operatorList=[''] * 3
@@ -34,6 +35,7 @@ except:
     mathCool24 = open(mathCoolDB,"w")
     mathCool24.close()
 """
+#mathCool24=open(mathCoolDB, "w")
 
 for a in range(1,lastCard):
     for b in range(1,lastCard):
@@ -51,24 +53,25 @@ for a in range(1,lastCard):
                                 try:    # in case evaluation fails for division-by-zero, etc.  Skip errors
                                     answer = float(eval(questionString))
                                     if ( answer == 24 ):
-                                        math24List.append(questionString)
-                                        print(questionString)
-                                        break
-                                        """
-                                        temp=[str(a),op1,str(b),op2,str(c),op3,str(d)].extend(precedence)
-                                        temp.sort()
-                                        key = ",".join(temp)
+                                        #math24List.append(questionString)
+                                        #print(questionString)
+                                        
+                                        temp1=re.sub('^\s+','',questionString)
+                                        temp2=re.sub('\s+$','',temp1)
+                                        temp1=re.sub('\s+',',',temp2)
+                                        temp2=re.split(',',temp1)
+                                        temp2.sort()
+                                        key = ",".join(temp2)
                                                                                 
                                         if key not in list(math24Dict.keys()):
                                             math24Dict[key] = questionString
-                                            print(questionString)
-                                            """
+                                            #print(questionString, '------8<------>8------', key)
+                                            #mathCool24.write(questionString + '\n')
+                                        break
                                 except:
                                     continue
-                                        
-                                
-mathCool24=open(mathCoolDB, "w")
-for answer in math24List:
-    line = answer + '\n'
-    mathCool24.write(line)
+mathCool24=open(mathCoolDB, "w")                                       
+for line in sorted(math24Dict.values()):
+    mathCool24.write(line + '\n')
 mathCool24.close()
+
