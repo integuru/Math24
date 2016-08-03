@@ -2,36 +2,28 @@ from random import randint
 from os import remove, rename
 
 #operatorDict = {1:"+", 2:"-", 3:"*", 4:"/"}
-#operandList=[0] * 4
-operatorList= ["+", "-", "*", "/"]
 #operatorList=[''] * 3
-mathCoolDB = "mathCool24.txt"
-maxCount=2000    # Maximum Count for each run
+#operandList=[1..10] # define valid card value
+#lastCard = 14   # define largest card value; counting J=11, Q=12, K=13
+lastCard = 11   # define largest card value; counting J=10, Q=10, K=10
+operatorList= ["+", "-", "*", "/"]  # define valid card operators
+mathCoolDB = "mathCool24.txt"   # where all values are kept in a file
 math24List=[]
+math24Dict={}
 
-"""
-with open(mathCoolDB, "r") as mathCool24:
+""" with open(mathCoolDB, "r") as mathCool24:
     for line in mathCoolDB:
         mathCoolDict[line] = 1
-"""
-
 try:    
     mathCool24=open(mathCoolDB, "r")
-    
     for line in mathCool24:
         math24List.append(line)
-        
     mathCool24.close()
 except:
     print(mathCoolDB, " is empty.")
     mathCool24 = open(mathCoolDB,"w")
     mathCool24.close()
-    
-    
-count=0
-lastCount=len(math24List)
-#maxCount += count
-lastCard=11
+"""
 
 for a in range(1,lastCard):
     for b in range(1,lastCard):
@@ -44,23 +36,18 @@ for a in range(1,lastCard):
                         for k in range(len(operatorList)):
                             op3 = operatorList[k]
                     
-                            #questionString = '{0:s} {2:s} {0:s} {2:s} {0:s} {2:s} {0:s}'.format(str(a),op1,str(b),op2,str(c),op3,str(d))
-                            questionString = '{:>2} {:>2} {:>3} {:>2} {:>3} {:>2} {:>3}'.format(a,op1,b,op2,c,op3,d)
-                                             
-                            #print(questionString)
+                            questionString = '{:>3} {:>2} {:>3} {:>2} {:>3} {:>2} {:>3}'.format(str(a),op1,str(b),op2,str(c),op3,str(d))
                             answer = float(eval(questionString))
-                            #if ( answer == int(answer)) and ( int(answer) == 24):
                             if ( answer == 24 ):
-                                #print(a,op1,b,op2,c,op3,d)
-        
-                                print(questionString)
-                                math24List.append(questionString)
-
-mathCool24=open(mathCoolDB, "a")
-for idx in range(lastCount, len(math24List)):
-    #print(math24List[idx])
-    line = math24List[idx] + '\n'
+                                temp=[str(a),op1,str(b),op2,str(c),op3,str(d)]
+                                temp.sort()
+                                key = ",".join(temp)
+                                if key not in list(math24Dict.keys()):
+                                    math24Dict[key] = questionString
+                                    print(questionString)
+                                
+mathCool24=open(mathCoolDB, "w")
+for key in math24Dict.keys():
+    line = math24Dict[key] + '\n'
     mathCool24.write(line)
 mathCool24.close()
-    
-    
