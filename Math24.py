@@ -61,5 +61,3 @@ for idx in range(lastCount, len(math24List)):
     line = math24List[idx] + '\n'
     mathCool24.write(line)
 mathCool24.close()
-    
-    
