@@ -10,6 +10,16 @@ operatorList= ["+", "-", "*", "/"]  # define valid card operators
 mathCoolDB = "mathCool24.txt"   # where all values are kept in a file
 math24List=[]
 math24Dict={}
+operations = ['    {:>3} {:>2}   {:>3}   {:>2}   {:>3}     {:>2} {:>3}  ',\
+              '  ( {:>3} {:>2}   {:>3} ) {:>2}   {:>3}     {:>2} {:>3}  ',\
+              '  ( {:>3} {:>2}   {:>3}   {:>2}   {:>3} )   {:>2} {:>3}  ',\
+              '( ( {:>3} {:>2}   {:>3} ) {:>2}   {:>3} )   {:>2} {:>3}  ',\
+              '  ( {:>3} {:>2}   {:>3} ) {:>2} ( {:>3}     {:>2} {:>3} )',\
+              '    {:>3} {:>2} ( {:>3}   {:>2}   {:>3} )   {:>2} {:>3}  ',\
+              '  ( {:>3} {:>2} ( {:>3}   {:>2}   {:>3} ) ) {:>2} {:>3}  ',\
+              '    {:>3} {:>2} ( {:>3}   {:>2}   {:>3}     {:>2} {:>3} )',\
+              '    {:>3} {:>2}   {:>3}   {:>2} ( {:>3}     {:>2} {:>3} )',\
+              '    {:>3} {:>2} ( {:>3}   {:>2} ( {:>3}     {:>2} {:>3} )']
 
 """ with open(mathCoolDB, "r") as mathCool24:
     for line in mathCoolDB:
@@ -35,19 +45,30 @@ for a in range(1,lastCard):
                         op2 = operatorList[j]
                         for k in range(len(operatorList)):
                             op3 = operatorList[k]
-                    
-                            questionString = '{:>3} {:>2} {:>3} {:>2} {:>3} {:>2} {:>3}'.format(str(a),op1,str(b),op2,str(c),op3,str(d))
-                            answer = float(eval(questionString))
-                            if ( answer == 24 ):
-                                temp=[str(a),op1,str(b),op2,str(c),op3,str(d)]
-                                temp.sort()
-                                key = ",".join(temp)
-                                if key not in list(math24Dict.keys()):
-                                    math24Dict[key] = questionString
-                                    print(questionString)
+
+                            for precedence in operations:
+                                questionString = precedence.format(str(a),op1,str(b),op2,str(c),op3,str(d))
+                                try:    # in case evaluation fails for division-by-zero, etc.  Skip errors
+                                    answer = float(eval(questionString))
+                                    if ( answer == 24 ):
+                                        math24List.append(questionString)
+                                        print(questionString)
+                                        break
+                                        """
+                                        temp=[str(a),op1,str(b),op2,str(c),op3,str(d)].extend(precedence)
+                                        temp.sort()
+                                        key = ",".join(temp)
+                                                                                
+                                        if key not in list(math24Dict.keys()):
+                                            math24Dict[key] = questionString
+                                            print(questionString)
+                                            """
+                                except:
+                                    continue
+                                        
                                 
 mathCool24=open(mathCoolDB, "w")
-for key in math24Dict.keys():
-    line = math24Dict[key] + '\n'
+for answer in math24List:
+    line = answer + '\n'
     mathCool24.write(line)
 mathCool24.close()
