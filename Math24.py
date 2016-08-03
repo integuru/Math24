@@ -44,14 +44,15 @@ for a in range(1,lastCard):
                         for k in range(len(operatorList)):
                             op3 = operatorList[k]
                     
-                            questionString = str(a) + op1 + \
-                                             str(b) + op2 + \
-                                             str(c) + op3 + \
-                                             str(d)
+                            #questionString = '{0:s} {2:s} {0:s} {2:s} {0:s} {2:s} {0:s}'.format(str(a),op1,str(b),op2,str(c),op3,str(d))
+                            questionString = '{:>2} {:>2} {:>3} {:>2} {:>3} {:>2} {:>3}'.format(a,op1,b,op2,c,op3,d)
                                              
                             #print(questionString)
                             answer = float(eval(questionString))
-                            if ( answer == int(answer)) and ( int(answer) == 24):
+                            #if ( answer == int(answer)) and ( int(answer) == 24):
+                            if ( answer == 24 ):
+                                #print(a,op1,b,op2,c,op3,d)
+        
                                 print(questionString)
                                 math24List.append(questionString)
 
