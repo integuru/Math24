@@ -64,12 +64,16 @@ for a in range(1,lastCard):
                                         key = ",".join(temp2)
                                                                                 
                                         if key not in list(math24Dict.keys()):
+                                            questionString = str(sorted([str(a),str(b),str(c),str(d)])) + ':' + questionString
+                                            #questionString = str(sorted(a,b,c,d))
+                                            print(questionString)
                                             math24Dict[key] = questionString
                                             #print(questionString, '------8<------>8------', key)
                                             #mathCool24.write(questionString + '\n')
                                         break
                                 except:
                                     continue
+
 mathCool24=open(mathCoolDB, "w")                                       
 for line in sorted(math24Dict.values()):
     mathCool24.write(line + '\n')
